@@ -41,6 +41,7 @@ namespace Trabalho
                 height = img.Height;
 
                 pictureBox1.Image = img;
+                convertToGray();
             }
         }
 
@@ -51,7 +52,7 @@ namespace Trabalho
 
         private void PictureBox1_MouseLeave(object sender, EventArgs e)
         {
-            pictureBox2.Image = null;
+            
         }
 
         private void Panel1_Paint(object sender, PaintEventArgs e)
@@ -81,27 +82,67 @@ namespace Trabalho
 
                 lbRGBvalue.Text = "(" + r + "," + g + "," + b + ")";
 
+                ///// CMY ///////////////////////////////////////////
                 int c = 255 - r;
                 int m = 255 - g;
                 int k = 255 - b;
 
                 lbCMYvalue.Text = "(" + c + "," + m + "," + k + ")";
 
+                ////// HSI/////////////////////////////////////////
                 double sum = (r + g + b);
-                double rl = (r / sum) * 255;
-                double gl = (g / sum) * 255;
-                double bl = (b / sum) * 255;
+                double rl = r > 0 ? (r / sum) : 0;
+                double gl = g > 0 ? (g / sum) : 0;
+                double bl = b > 0 ? (b / sum) : 0;
 
                 double i = (r + g + b) / (3);
-                double s = 1 - ((3/(rl+gl+bl)) * (Math.Min(Math.Min(rl, gl), bl)));
-                double h = Math.Acos(0.5 * ((rl - gl) + (rl - bl)) / Math.Sqrt(((rl - gl) * (rl - gl)) + ((rl - bl) * (gl - bl))));
-                if (b > g)
-                    h = (2 * Math.PI - h);
+                double s = 1 - 3 * (Math.Min(Math.Min(rl, gl), bl));
+                double h;
+                if (r == b && b == g)
+                    h = 0;
+                else if (b <= g)
+                    h = Math.Acos(0.5 * ((r - g) + (r - b)) / Math.Sqrt(((r - g) * (r - g)) + ((r - b) * (g - b))));
+                else
+                    h = 2 * Math.PI - Math.Acos(0.5 * ((r - g) + (r - b)) / Math.Sqrt(((r - g) * (r - g)) + ((r - b) * (g - b))));
                 s = (Math.Truncate(100 * s) / 100)*100;
                 h = (h * 180 / Math.PI);
+                h = Convert.ToInt32((Math.Truncate(100 * h) / 100));
 
                 lbHSIvalue.Text = "(" + h + "," + s + "," + i + ")";
             }
+        }
+
+        public void convertToGray()
+        {
+            Bitmap img = new Bitmap(pictureBox1.Image);
+            for(int x = 0; x < width; x++)
+            {
+                for(int y = 0; y < height; y++)
+                {
+                    Color pixel = img.GetPixel(x, y);
+
+                    int a = pixel.A;
+                    int b = pixel.B;
+                    int g = pixel.G;
+                    int r = pixel.R;
+
+                    int avg = (r + b + g) / 3;
+                    img.SetPixel(x, y, Color.FromArgb(a, avg, avg, avg));
+                }
+            }
+            pictureBox2.Image = img;
+            pictureBox3.Image = img;
+            pictureBox4.Image = img;
+        }
+
+        public void changeItensity()
+        {
+
+        }
+
+        public void changeSaturation()
+        {
+            
         }
     }
 }
