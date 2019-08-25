@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
@@ -43,15 +42,17 @@
             this.lbCMY = new System.Windows.Forms.Label();
             this.lbRGBvalue = new System.Windows.Forms.Label();
             this.lbRGB = new System.Windows.Forms.Label();
-            this.lbMatiz = new System.Windows.Forms.Label();
-            this.lbBrilho = new System.Windows.Forms.Label();
+            this.lbS = new System.Windows.Forms.Label();
+            this.lbH = new System.Windows.Forms.Label();
             this.trackBar2 = new System.Windows.Forms.TrackBar();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.btAbrirImagem = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.label6 = new System.Windows.Forms.Label();
+            this.lbI = new System.Windows.Forms.Label();
+            this.trackBar3 = new System.Windows.Forms.TrackBar();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
@@ -59,16 +60,19 @@
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).BeginInit();
             this.SuspendLayout();
             // 
             // pictureBox1
             // 
+            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBox1.Location = new System.Drawing.Point(13, 13);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(585, 267);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
+            this.pictureBox1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.PictureBox1_MouseClick);
             this.pictureBox1.MouseEnter += new System.EventHandler(this.PictureBox1_MouseEnter);
             this.pictureBox1.MouseLeave += new System.EventHandler(this.PictureBox1_MouseLeave);
             this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PictureBox1_MouseMove);
@@ -129,14 +133,17 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.trackBar3);
+            this.panel1.Controls.Add(this.lbI);
+            this.panel1.Controls.Add(this.label6);
             this.panel1.Controls.Add(this.lbHSIvalue);
             this.panel1.Controls.Add(this.lbHSI);
             this.panel1.Controls.Add(this.lbCMYvalue);
             this.panel1.Controls.Add(this.lbCMY);
             this.panel1.Controls.Add(this.lbRGBvalue);
             this.panel1.Controls.Add(this.lbRGB);
-            this.panel1.Controls.Add(this.lbMatiz);
-            this.panel1.Controls.Add(this.lbBrilho);
+            this.panel1.Controls.Add(this.lbS);
+            this.panel1.Controls.Add(this.lbH);
             this.panel1.Controls.Add(this.trackBar2);
             this.panel1.Controls.Add(this.label5);
             this.panel1.Controls.Add(this.label4);
@@ -202,28 +209,29 @@
             this.lbRGB.TabIndex = 7;
             this.lbRGB.Text = "RGB:";
             // 
-            // lbMatiz
+            // lbS
             // 
-            this.lbMatiz.AutoSize = true;
-            this.lbMatiz.Location = new System.Drawing.Point(55, 124);
-            this.lbMatiz.Name = "lbMatiz";
-            this.lbMatiz.Size = new System.Drawing.Size(13, 13);
-            this.lbMatiz.TabIndex = 6;
-            this.lbMatiz.Text = "0";
+            this.lbS.AutoSize = true;
+            this.lbS.Location = new System.Drawing.Point(220, 52);
+            this.lbS.Name = "lbS";
+            this.lbS.Size = new System.Drawing.Size(13, 13);
+            this.lbS.TabIndex = 6;
+            this.lbS.Text = "0";
             // 
-            // lbBrilho
+            // lbH
             // 
-            this.lbBrilho.AutoSize = true;
-            this.lbBrilho.Location = new System.Drawing.Point(55, 52);
-            this.lbBrilho.Name = "lbBrilho";
-            this.lbBrilho.Size = new System.Drawing.Size(13, 13);
-            this.lbBrilho.TabIndex = 5;
-            this.lbBrilho.Text = "0";
+            this.lbH.AutoSize = true;
+            this.lbH.Location = new System.Drawing.Point(44, 52);
+            this.lbH.Name = "lbH";
+            this.lbH.Size = new System.Drawing.Size(13, 13);
+            this.lbH.TabIndex = 5;
+            this.lbH.Text = "0";
             // 
             // trackBar2
             // 
-            this.trackBar2.Location = new System.Drawing.Point(15, 140);
+            this.trackBar2.Location = new System.Drawing.Point(203, 71);
             this.trackBar2.Maximum = 100;
+            this.trackBar2.Minimum = -100;
             this.trackBar2.Name = "trackBar2";
             this.trackBar2.Size = new System.Drawing.Size(172, 45);
             this.trackBar2.TabIndex = 4;
@@ -233,29 +241,29 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(15, 123);
+            this.label5.Location = new System.Drawing.Point(200, 52);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(35, 13);
+            this.label5.Size = new System.Drawing.Size(17, 13);
             this.label5.TabIndex = 3;
-            this.label5.Text = "Matiz:";
+            this.label5.Text = "S:";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 52);
+            this.label4.Location = new System.Drawing.Point(20, 52);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(36, 13);
+            this.label4.Size = new System.Drawing.Size(18, 13);
             this.label4.TabIndex = 2;
-            this.label4.Text = "Brilho:";
+            this.label4.Text = "H:";
             // 
             // trackBar1
             // 
             this.trackBar1.Location = new System.Drawing.Point(12, 71);
-            this.trackBar1.Maximum = 100;
+            this.trackBar1.Maximum = 360;
+            this.trackBar1.Minimum = -360;
             this.trackBar1.Name = "trackBar1";
             this.trackBar1.Size = new System.Drawing.Size(175, 45);
             this.trackBar1.TabIndex = 1;
-            this.trackBar1.TickFrequency = 5;
             this.trackBar1.Scroll += new System.EventHandler(this.TrackBar1_Scroll);
             // 
             // btAbrirImagem
@@ -272,9 +280,34 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // timer1
+            // label6
             // 
-            this.timer1.Enabled = true;
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(382, 51);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(13, 13);
+            this.label6.TabIndex = 13;
+            this.label6.Text = "I:";
+            // 
+            // lbI
+            // 
+            this.lbI.AutoSize = true;
+            this.lbI.Location = new System.Drawing.Point(402, 52);
+            this.lbI.Name = "lbI";
+            this.lbI.Size = new System.Drawing.Size(13, 13);
+            this.lbI.TabIndex = 14;
+            this.lbI.Text = "0";
+            // 
+            // trackBar3
+            // 
+            this.trackBar3.Location = new System.Drawing.Point(381, 71);
+            this.trackBar3.Maximum = 255;
+            this.trackBar3.Minimum = -255;
+            this.trackBar3.Name = "trackBar3";
+            this.trackBar3.Size = new System.Drawing.Size(172, 45);
+            this.trackBar3.TabIndex = 15;
+            this.trackBar3.TickFrequency = 5;
+            this.trackBar3.Scroll += new System.EventHandler(this.TrackBar3_Scroll);
             // 
             // Form1
             // 
@@ -299,6 +332,7 @@
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -319,8 +353,8 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TrackBar trackBar1;
         private System.Windows.Forms.Button btAbrirImagem;
-        private System.Windows.Forms.Label lbMatiz;
-        private System.Windows.Forms.Label lbBrilho;
+        private System.Windows.Forms.Label lbS;
+        private System.Windows.Forms.Label lbH;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Label lbCMYvalue;
         private System.Windows.Forms.Label lbCMY;
@@ -328,7 +362,9 @@
         private System.Windows.Forms.Label lbRGB;
         private System.Windows.Forms.Label lbHSIvalue;
         private System.Windows.Forms.Label lbHSI;
-        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.TrackBar trackBar3;
+        private System.Windows.Forms.Label lbI;
+        private System.Windows.Forms.Label label6;
     }
 }
 

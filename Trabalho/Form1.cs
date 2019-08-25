@@ -15,20 +15,66 @@ namespace Trabalho
     {
         private int width;
         private int height;
+        private Boolean click;
 
         public Form1()
         {
             InitializeComponent();
+            click = false;
         }
 
         private void TrackBar1_Scroll(object sender, EventArgs e)
         {
-            lbBrilho.Text = trackBar1.Value.ToString();
+            lbH.Text = trackBar1.Value.ToString();
+            if (pictureBox1.Image != null && click)
+                desconverter(trackBar1.Value,trackBar2.Value,trackBar3.Value,1);
         }
 
         private void TrackBar2_Scroll(object sender, EventArgs e)
         {
-            lbMatiz.Text = trackBar2.Value.ToString();
+            lbS.Text = trackBar2.Value.ToString();
+            if (pictureBox1.Image != null && click)
+                desconverter(trackBar1.Value, trackBar2.Value, trackBar3.Value, 2);
+        }
+
+        private void TrackBar3_Scroll(object sender, EventArgs e)
+        {
+            lbI.Text = trackBar3.Value.ToString();
+            if (pictureBox1.Image != null && click)
+                desconverter(trackBar1.Value, trackBar2.Value, trackBar3.Value, 3);
+        }
+
+        private void desconverter(int H, int S, int I, int tipo)
+        {
+            int h = (int)(H * Math.PI / 180);
+            int s = S / 100;
+            int i = I / 255;
+            int r, g, b;
+
+            double x = i * (1 - s);
+            double y = i * (1 + (s * Math.Cos(h) / Math.Cos(Math.PI / 3 - h)));
+            double z = 3 * i - (x + y);
+
+            if(h > 2 * Math.PI/3)
+            {
+                b = (int)x;
+                r = (int)y;
+                g = (int)z;
+            }
+            else if(2*Math.PI/3 <= h && h < 4 * Math.PI / 3)
+            {
+                h = (int)(h - 2 * Math.PI / 3);
+                r = (int)x;
+                g = (int)y;
+                b = (int)z;
+            }
+            else if(4*Math.PI/3 <= h && h < 2*Math.PI)
+            {
+                h = (int)(h - 4 * Math.PI / 3);
+                g = (int)x;
+                b = (int)y;
+                r = (int)z;
+            }
         }
 
         private void BtAbrirImagem_Click(object sender, EventArgs e)
@@ -62,7 +108,7 @@ namespace Trabalho
 
         private void PictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
-            if(pictureBox1.Image != null)
+            if(pictureBox1.Image != null && !click)
             {
                 //585 largura maxima
                 //267 altura maxima
@@ -109,6 +155,15 @@ namespace Trabalho
                 h = Convert.ToInt32((Math.Truncate(100 * h) / 100));
 
                 lbHSIvalue.Text = "(" + h + "," + s + "," + i + ")";
+
+                trackBar1.Value = Convert.ToInt32(h);
+                lbH.Text = h.ToString();
+
+                trackBar2.Value = Convert.ToInt32(s);
+                lbS.Text = s.ToString();
+
+                trackBar3.Value = Convert.ToInt32(i);
+                lbI.Text = i.ToString();
             }
         }
 
@@ -143,6 +198,14 @@ namespace Trabalho
         public void changeSaturation()
         {
             
+        }
+
+        private void PictureBox1_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (!click)
+                click = true;
+            else
+                click = false;
         }
     }
 }
